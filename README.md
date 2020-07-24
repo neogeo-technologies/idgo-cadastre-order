@@ -2,27 +2,54 @@
 
 ## Configuration
 
-Dans le fichier **settings.py** de l'application :
+#### Dans le fichier `settings.py` de l'application :
 
-* Ajouter l'application :
+##### Ajouter l'application :
 
-    ```
-    INSTALLED_APPS = [
-        # ...
-        'idgo_admin',
-        'idgo_cadastre_order',
-        # ...
-    ]
-    ```
+```python
+INSTALLED_APPS = [
+    # (...)
+    'idgo_admin',
+    'idgo_cadastre_order',
+    # (...)
+]
 
-Dans le fichier **urls.py** de l'application :
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # (...)
+                'idgo_cadastre_order.context_processors.global_vars',
+                # (...)
+            ],
+        },
+    },
+]
 
-* Ajouter le _pattern_ :
 
-    ```
-    urlpatterns = [
-        # ...
-        url(),
-        # ...
-    ]
-    ```
+# Mandatory:
+
+IDGO_CADASTRE_ORDER_CONTACT_EMAIL = ''
+IDGO_CADASTRE_ORDER_COMMITMENT_HREF = ''
+
+# Optional:
+
+IDGO_CADASTRE_ORDER_CC_EMAIL = []
+IDGO_CADASTRE_ORDER_DPO_HREF = 'https://www.cnil.fr/fr/designation-dpo'
+IDGO_CADASTRE_ORDER_PROCESSING_TIME = '15 jours'
+
+```
+
+
+#### Dans le fichier `urls.py` de l'application :
+
+```python
+urlpatterns = [
+    # (...)
+     url(r'^cadastre/order/', include('idgo_cadastre_order.urls', namespace='idgo_cadastre_order')),
+    # (...)
+]
+```
