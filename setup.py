@@ -35,7 +35,7 @@ reqs = [str(req) for req in parse_requirements(reqs_filename)]
 
 setup(
     name='idgo-cadastre-order',
-    version='version',
+    version=version,
     author='Neogeo Technologies',
     author_email='contact@neogeo.fr',
     url='https://git.neogeo.fr/idgo/apps/idgo-cadastre-order',
