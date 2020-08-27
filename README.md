@@ -40,7 +40,7 @@ IDGO_CADASTRE_ORDER_COMMITMENT_HREF = ''
 IDGO_CADASTRE_ORDER_CC_EMAIL = []
 IDGO_CADASTRE_ORDER_DPO_HREF = 'https://www.cnil.fr/fr/designation-dpo'
 IDGO_CADASTRE_ORDER_PROCESSING_TIME = '15 jours'
-
+IDGO_CADASTRE_ORDER_DOCUMENTATION = 'https://...'
 ```
 
 
@@ -49,7 +49,7 @@ IDGO_CADASTRE_ORDER_PROCESSING_TIME = '15 jours'
 ```python
 urlpatterns = [
     # (...)
-     url(r'^cadastre/order/', include('idgo_cadastre_order.urls', namespace='idgo_cadastre_order')),
+    url(r'^cadastre/order/', include('idgo_cadastre_order.urls', namespace='idgo_cadastre_order')),
     # (...)
 ]
 ```

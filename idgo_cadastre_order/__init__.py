@@ -30,6 +30,7 @@ MANDATORY = (
 
 OPTIONAL = (
     ('IDGO_CADASTRE_ORDER_CC_EMAIL', []),
+    ('IDGO_CADASTRE_ORDER_DOCUMENTATION', None),
     ('IDGO_CADASTRE_ORDER_DPO_HREF', 'https://www.cnil.fr/fr/designation-dpo'),
     ('IDGO_CADASTRE_ORDER_PROCESSING_TIME', '15 jours'),
     )
