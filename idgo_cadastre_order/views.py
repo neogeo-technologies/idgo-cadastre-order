@@ -25,6 +25,7 @@ from idgo_admin.models.mail import sender as mail_sender
 from idgo_cadastre_order.forms import OrderForm
 
 from idgo_cadastre_order import IDGO_CADASTRE_ORDER_CONTACT_EMAIL
+from idgo_cadastre_order import IDGO_CADASTRE_ORDER_CC_EMAIL
 
 
 decorators = [login_required(login_url=settings.LOGIN_URL)]
@@ -63,13 +64,21 @@ def upload_file(request):
                 'date': TODAY.strftime('%d/%m/%Y'),
                 'email': user.email}
 
-            mail_sender('cadastre_order', to=[user.email], **mail_kwargs)
+            mail_sender(
+                'cadastre_order',
+                to=[user.email],
+                cc=IDGO_CADASTRE_ORDER_CC_EMAIL,
+                **mail_kwargs,
+                )
+
             mail_sender(
                 'confirm_cadastre_order',
                 to=[IDGO_CADASTRE_ORDER_CONTACT_EMAIL],
+                cc=IDGO_CADASTRE_ORDER_CC_EMAIL,
                 url=request.build_absolute_uri(
                     reverse('admin:idgo_cadastre_order_order_change', args=(order.id,))),
-                **mail_kwargs)
+                **mail_kwargs,
+                )
 
             # page de confirmation
             messageOrder = ("Votre commande de fichiers fonciers "
