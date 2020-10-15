@@ -59,9 +59,12 @@ def export_as_csv_action(description="Export selected objects as CSV file",
                 if callable(getattr(obj, field)) else getattr(obj, field)
                 for field in field_names]
 
-            email = User.objects.get(username=row[3]).email
+            user = User.objects.get(username=row[3])
+            email = user.email
             row.append(email)
-            jurisdiction = obj.organisation.jurisdiction
+
+            organisation = user.profile.organisation
+            jurisdiction = organisation and organisation.jurisdiction
             if jurisdiction:
                 row.append(jurisdiction.name)
                 row.append(
@@ -90,7 +93,7 @@ def mail_date_organisation(modeladmin, request, queryset, obj):
     user = getattr(obj, 'applicant')
     emailInfo = dict(
         email=User.objects.get(username=user).email,
-        organisation=getattr(obj, 'organisation'),
+        organisation=user.profile.organisation or '???',
         date=getattr(obj, 'date'))
     return emailInfo
 

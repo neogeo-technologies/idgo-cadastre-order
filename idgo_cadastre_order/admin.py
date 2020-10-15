@@ -76,7 +76,8 @@ class OrderAdmin(admin.ModelAdmin):
 
     def orga(self, obj):
         if obj:
-            return obj.applicant.profile.organisation
+            return obj.applicant.profile.organisation \
+                or "ERREUR: L'utilisateur n'est rattaché à aucune organisation."
     orga.short_description = 'Organisation'
     orga.admin_order_field = 'applicant__profile__organisation'
 
