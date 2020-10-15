@@ -70,7 +70,8 @@ class OrderAdmin(admin.ModelAdmin):
     # ajout du nom du territoire de compétences
     def terr(self, obj):
         if obj:
-            return obj.applicant.profile.organisation.jurisdiction
+            if obj.applicant.profile.organisation:
+                return obj.applicant.profile.organisation.jurisdiction
     terr.short_description = "Territoire de compétences"
 
     def orga(self, obj):
