@@ -19,3 +19,4 @@ from django.apps import AppConfig
 
 class IdgoCadastreOrderConfig(AppConfig):
     name = 'idgo_cadastre_order'
+    verbose_name = "IDGO Cadastre Order"
