@@ -15,8 +15,9 @@
 
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
 
@@ -24,21 +25,26 @@ from idgo_admin.models.mail import sender as mail_sender
 
 from idgo_cadastre_order.forms import OrderForm
 
+from idgo_admin import IDGO_USER_PARTNER_LABEL_PLURAL
+
 from idgo_cadastre_order import IDGO_CADASTRE_ORDER_CONTACT_EMAIL
 from idgo_cadastre_order import IDGO_CADASTRE_ORDER_CC_EMAIL
+from idgo_cadastre_order import IDGO_CADASTRE_ORDER_REDUCED_TO_PARTNER
 
 
-decorators = [login_required(login_url=settings.LOGIN_URL)]
-
-TODAY = timezone.now().date()
-
-
-@login_required(login_url=settings.LOGIN_URL)
 def upload_file(request):
-
     user = request.user
+    if not request.user.is_authenticated:
+        message = ("La commande de fichiers fonciers est réservée "
+                   "aux {partner_lbl_plu}. Veuillez vous connecter pour "
+                   "accéder au formulaire. "
+                   ).format(partner_lbl_plu=IDGO_USER_PARTNER_LABEL_PLURAL)
+        messages.info(request, message)
+        return redirect('{path}?next={next}'.format(
+            path=reverse(settings.LOGIN_URL), next=request.path))
+
     profile = request.user.profile
-    if not profile.crige_membership:
+    if IDGO_CADASTRE_ORDER_REDUCED_TO_PARTNER and not profile.crige_membership:
         return render(request, 'idgo_cadastre_order/forbidden.html')
 
     if request.method == 'POST':
@@ -61,7 +67,7 @@ def upload_file(request):
                 'full_name': user.get_full_name(),
                 'last_name': user.last_name,
                 'first_name': user.first_name,
-                'date': TODAY.strftime('%d/%m/%Y'),
+                'date': timezone.now().date().strftime('%d/%m/%Y'),
                 'email': user.email}
 
             mail_sender(
@@ -80,14 +86,12 @@ def upload_file(request):
                 **mail_kwargs,
                 )
 
-            # page de confirmation
-            messageOrder = ("Votre commande de fichiers fonciers "
-                            'a bien été envoyée.'
-                            ' Vous recevrez un e-mail récapitulatif '
-                            "d'ici quelques minutes. ")
-
-            return render(request, 'idgo_admin/message.html',
-                          {'message': messageOrder})
+            message = (
+                "Votre commande de fichiers fonciers a bien été envoyée. "
+                "Vous recevrez un e-mail récapitulatif d'ici quelques minutes."
+                )
+            return render(
+                request, 'idgo_admin/message.html', {'message': message})
 
     # si on reçoit un GET (ou autre méthode) un formulaire vide est renvoyé
     else:

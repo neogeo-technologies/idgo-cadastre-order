@@ -19,6 +19,9 @@ from django.conf.urls import url
 from idgo_cadastre_order import views
 
 
+app_name = 'idgo_cadastre_order'
+
+
 urlpatterns = [
     url('^$', views.upload_file, name='index'),
     ]
