@@ -14,8 +14,11 @@
 # under the License.
 
 
+from django.conf import settings
+
 from idgo_admin import HREF_WWW
 from idgo_admin import DEFAULT_PLATFORM_NAME
+from idgo_admin import IDGO_USER_PARTNER_LABEL_PLURAL
 
 from idgo_cadastre_order import IDGO_CADASTRE_ORDER_COMMITMENT_HREF
 from idgo_cadastre_order import IDGO_CADASTRE_ORDER_DOCUMENTATION
@@ -31,4 +34,5 @@ def global_vars(request):
         'IDGO_CADASTRE_ORDER_DOCUMENTATION': IDGO_CADASTRE_ORDER_DOCUMENTATION,
         'IDGO_CADASTRE_ORDER_DPO_HREF': IDGO_CADASTRE_ORDER_DPO_HREF,
         'IDGO_CADASTRE_ORDER_PROCESSING_TIME': IDGO_CADASTRE_ORDER_PROCESSING_TIME,
+        'IDGO_USER_PARTNER_LABEL_PLURAL': IDGO_USER_PARTNER_LABEL_PLURAL,
         }
